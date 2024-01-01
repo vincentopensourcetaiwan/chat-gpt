@@ -11,16 +11,13 @@ class ChatResponsesController < ApplicationController
       client.chat(
         parameters: {
           model: "gpt-3.5-turbo",
-          messages: [
-            { role: "user", content: params[:prompt] }],
+          messages: [{ role: "user", content: params[:prompt] }],
           stream: proc do |chunk|
             content = chunk.dig("choices", 0, "delta", "content")
             if content.nil?
               return
             end
-            sse.write({
-                        message: content,
-                      })
+            sse.write({ message: content })
           end
         }
       )

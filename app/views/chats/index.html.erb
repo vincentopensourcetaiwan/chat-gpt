@@ -4,7 +4,8 @@
   </section>
   <%= form_with data: { action: "chat#generateResponse" } do |form| %>
     <div class="chat-input">
-      <%= form.text_area :message, id: 'prompt',
+      <%= form.text_area :message,
+                         id: 'prompt',
                          data: { chat_target: "prompt" }
       %>
       <%= form.submit 'Send' %>
