@@ -4,9 +4,12 @@ class ChatResponsesController < ApplicationController
   def show
     response.headers['Content-Type'] = 'text/event-stream'
     response.headers['Last-Modified'] = Time.now.httpdate
+    # handle message event
     sse = SSE.new(response.stream, event: "message")
+    # connect to OpenAI API
     client = OpenAI::Client.new(access_token: ENV["OPENAI_ACCESS_TOKEN"])
 
+    # send prompt to OpenAI API
     begin
       client.chat(
         parameters: {
@@ -17,6 +20,7 @@ class ChatResponsesController < ApplicationController
             if content.nil?
               return
             end
+            # send response to client
             sse.write({ message: content })
           end
         }

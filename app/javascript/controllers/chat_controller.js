@@ -11,13 +11,22 @@ export default class extends Controller {
   }
 
   generateResponse(event) {
+    // 1. Prevent the default form submission behavior
     event.preventDefault()
 
     this.#createLabel('You')
+
+    // 2. Create a new <pre> element and append it to the conversation
+    // the content of the <pre> element should be the prompt
     this.#createMessage(this.promptTarget.value)
+
     this.#createLabel('ChatGPT')
+
+    // 3. Create a new <pre> element and append it to the conversation
+    // the content of the <pre> element should be the response
     this.currentPre = this.#createMessage()
 
+    // 4. setup event source
     this.#setupEventSource()
 
     this.promptTarget.value = ""
@@ -37,7 +46,9 @@ export default class extends Controller {
   }
 
   #setupEventSource() {
+    // 5. setup event source
     this.eventSource = new EventSource(`/chat_responses?prompt=${this.promptTarget.value}`)
+    // 6. add event listeners
     this.eventSource.addEventListener("message", this.#handleMessage.bind(this))
     this.eventSource.addEventListener("error", this.#handleError.bind(this))
   }

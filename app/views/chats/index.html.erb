@@ -2,6 +2,7 @@
   <h1>ChatGPT</h1>
   <section data-chat-target="conversation" class="chat-conversation">
   </section>
+  # send a message to the server
   <%= form_with data: { action: "chat#generateResponse" } do |form| %>
     <div class="chat-input">
       <%= form.text_area :message,
